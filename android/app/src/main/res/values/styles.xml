@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-
-    <!-- Theme applied while app is starting (Light mode) -->
-    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
-
-        <!-- Splash background (same as Flutter splash background) -->
+    <!-- Theme applied to the Android Window while the process is starting -->
+    <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
-
-        <!-- Android 12+ background -->
-        <item name="android:windowSplashScreenBackground">#FFFFFF</item>
-
-        <!-- Remove system app icon splash -->
-        <item name="android:windowSplashScreenAnimatedIcon">@null</item>
-
-        <!-- Remove icon background circle (important fix) -->
-        <item name="android:windowSplashScreenIconBackgroundColor">#FFFFFF</item>
-
     </style>
 
-    <!-- Theme after Flutter loads -->
-    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">?android:colorBackground</item>
+    <!-- Theme applied to the Android Window as soon as the process has started -->
+    <style name="Theme.App.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
-
 </resources>

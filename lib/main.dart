@@ -32,7 +32,7 @@ class _GmailSplashScreenState extends State<GmailSplashScreen>
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -75,8 +75,8 @@ class _GmailSplashScreenState extends State<GmailSplashScreen>
               child: Center(
                 child: Image.asset(
                   "assets/gmail.gif",
-                  width: 80,
-                  height: 90,
+                  width: 100,
+                  height: 100,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -92,7 +92,7 @@ class _GmailSplashScreenState extends State<GmailSplashScreen>
                       text: "Google",
                       style: TextStyle(
                         color: Color(0xff4A4A4A),
-                        fontSize: 24,
+                        fontSize: 26,
                         fontWeight: FontWeight.w500,
                         letterSpacing: -0.5,
                       ),
@@ -102,7 +102,7 @@ class _GmailSplashScreenState extends State<GmailSplashScreen>
                       text: " Workspace",
                       style: TextStyle(
                         color: Color(0xff7B7B7B),
-                        fontSize: 24,
+                        fontSize: 25,
                         fontWeight: FontWeight.w400,
                         letterSpacing: -0.5,
                       ),
