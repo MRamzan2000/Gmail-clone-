@@ -12,9 +12,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: "Gmail",
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Roboto'),
       home: GmailSplashScreen(),
     );
   }
