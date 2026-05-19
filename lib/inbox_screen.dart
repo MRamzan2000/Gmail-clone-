@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 final List<Map<String, dynamic>> _messages = [
   {
     "sender": "CIH Online",
-    "title": "Confirmation of Bank Transfer CIH ...",
+    "title": "Confirmation of Bank Transfer CIH Online",
     "subtitle": "Confirmation of Bank Transfer Dear C...",
-    "time": "11:10",
+    "time": "16:44",
     "isRead": true, // opened
     "isCIH": true,
-    "from": "cihnet@cih.co.ma",
-    "email": "ayamaroc025@gmail.com",
-    "date": "May 18, 2026, 11:10",
+    "from": " cihnet@cih.co.ma",
+    "email": " ayamaroc025@gmail.com",
+    "date": " May 18, 2026, 16:44",
   },
   {
     "sender": "Binance",
@@ -426,7 +426,7 @@ class InboxScreen extends StatelessWidget {
                         width: 90,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -446,6 +446,34 @@ class MessageDetailScreen extends StatefulWidget {
 
 class _MessageDetailScreenState extends State<MessageDetailScreen> {
   bool _isDetailsExpanded = false;
+  final ScrollController _scrollController = ScrollController();
+  bool _isFooterVisible = true;
+  double _lastScrollOffset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final currentOffset = _scrollController.offset;
+    if (currentOffset > _lastScrollOffset && currentOffset > 50) {
+      // Scroll DOWN → hide footer
+      if (_isFooterVisible) setState(() => _isFooterVisible = false);
+    } else {
+      // Scroll UP → show footer
+      if (!_isFooterVisible) setState(() => _isFooterVisible = true);
+    }
+    _lastScrollOffset = currentOffset;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -460,7 +488,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ── Top Action Bar ──
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
               child: Row(
@@ -474,19 +501,20 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     ),
                   ),
                   const Spacer(),
-                  Image.asset("assets/delete.png", height: 28, width: 28),
-
+                  Image.asset("assets/download.png", height: 28, width: 28,color: Color(0xff1a191e),),
+                  const SizedBox(width: 18),
+                  Image.asset("assets/delete.png", height: 28, width: 28,color: Color(0xff1a191e)),
                   const SizedBox(width: 20),
                   const Icon(
                     Icons.mark_email_unread_outlined,
                     size: 26,
-                    color: Color(0xFF1C1B1F),
+                    color: Color(0xff1a191e),
                   ),
                   const SizedBox(width: 20),
                   const Icon(
                     Icons.more_vert,
                     size: 26,
-                    color: Color(0xFF1C1B1F),
+                    color: Color(0xff1a191e),
                   ),
                 ],
               ),
@@ -494,6 +522,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
             Expanded(
               child: SingleChildScrollView(
+                controller: _scrollController, // ← scroll controller
                 physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -501,18 +530,16 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 4),
-
-                      // ── Subject + Star ──
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Text(
                               isCIH
-                                  ? "Confirmation of Bank Transfer"
+                                  ? "Confirmation of Bank Transfer CIH Online"
                                   : (widget.data["title"] ?? "No Subject"),
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 19,
                                 height: 1.25,
                                 fontWeight: FontWeight.w500,
                                 fontFamily: 'Roboto',
@@ -530,67 +557,27 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       ),
 
                       const SizedBox(height: 8),
-
-                      // ── Sender name + Inbox tag (CIH style) ──
-                      if (isCIH)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "CIH Online  ",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF1C1B1F),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF5d73a9),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                "Inbox",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Roboto',
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 30),
-                          ],
-                        )
-                      else
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF5d73a9),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            "Inbox",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'Roboto',
-                            ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5d73a9),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text(
+                          "Inbox",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Roboto',
                           ),
                         ),
+                      ),
 
                       const SizedBox(height: 20),
-
-                      // ── Email Card ──
                       Container(
                         decoration: BoxDecoration(
                           color: const Color(0xfff9f8fe),
@@ -600,7 +587,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                           children: [
                             const SizedBox(height: 20),
 
-                            // ── Sender Row ──
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
@@ -692,30 +678,35 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                       ),
                                     ),
 
-                                    Image.asset(
-                                      "assets/emoji.png",
-                                      height: 26,
-                                      width: 26,
-                                    ),
-                                    const SizedBox(width: 14),
-                                    Image.asset(
-                                      "assets/reply.png",
-                                      height: 26,
-                                      width: 26,
-                                    ),
-
-                                    const SizedBox(width: 14),
-                                    const Icon(
-                                      Icons.more_horiz,
-                                      size: 26,
-                                      color: Color(0xFF5F6368),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            "assets/emoji.png",
+                                            height: 26,
+                                            width: 26,
+                                          ),
+                                          const SizedBox(width: 14),
+                                          Image.asset(
+                                            "assets/reply.png",
+                                            height: 26,
+                                            width: 26,
+                                          ),
+                                          const SizedBox(width: 14),
+                                          const Icon(
+                                            Icons.more_horiz,
+                                            size: 26,
+                                            color: Color(0xFF5F6368),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
 
-                            // ── Expanded Details ──
                             if (_isDetailsExpanded)
                               Container(
                                 margin: const EdgeInsets.fromLTRB(
@@ -738,19 +729,24 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     _infoRow(
-                                      "From",
+                                      " From",
                                       widget.data["from"] ??
                                           "noreply@example.com",
                                     ),
                                     const SizedBox(height: 8),
                                     _infoRow(
-                                      "To",
+                                      " To",
                                       widget.data["email"] ?? "user@gmail.com",
                                     ),
                                     const SizedBox(height: 8),
-                                    _infoRow("Date", widget.data["date"] ?? ""),
+                                    _infoRow(
+                                      " Date",
+                                      widget.data["date"] ?? "",
+                                    ),
                                     const SizedBox(height: 8),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: const [
                                         Icon(
                                           Icons.lock_outline,
@@ -759,11 +755,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                         ),
                                         SizedBox(width: 6),
                                         Text(
-                                          "Standard encryption (TLS).",
+                                          "     Standard encryption (TLS).",
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontFamily: 'Roboto',
-                                            color: Color(0xFF79747E),
+                                            color: Color(0xFF1c1b20),
                                           ),
                                         ),
                                       ],
@@ -772,11 +768,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                                     const Padding(
                                       padding: EdgeInsets.only(left: 24),
                                       child: Text(
-                                        "View security details",
+                                        "     View security details",
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontFamily: 'Roboto',
-                                          color: Color(0xFF3a4969),
+                                          color: Color(0xFF464e71),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -787,7 +783,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
                             const SizedBox(height: 20),
 
-                            // ── Email Body ──
                             const Divider(
                               color: Color(0xFFE0E0E0),
                               thickness: 1,
@@ -813,104 +808,120 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       ),
 
                       const SizedBox(height: 20),
-
-                      // ── Bottom Action Buttons ──
-                      Row(
-                        children: [
-                          _buildActionButton("Reply", "assets/reply.png"),
-                          const SizedBox(width: 10),
-                          _buildActionButton("Forward", "assets/forward.png"),
-                          const SizedBox(width: 10),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            width: 46,
-                            height: 46,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF3b4255),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(0xFFC4C0CC),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: Image.asset(
-                              "assets/emoji.png",
-                              height: 26,
-                              width: 26,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
               ),
             ),
 
-            // ── Footer ──
-            Container(
-              color: const Color(0xFFe8e7ef),
+            // ── Footer with hide-on-scroll animation ──
+            Padding(
               padding: const EdgeInsets.fromLTRB(32, 10, 32, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
                 children: [
-                  Stack(
-                    clipBehavior: Clip.none,
+                  Row(
                     children: [
+                      _buildActionButton("Reply", "assets/reply.png"),
+                      const SizedBox(width: 10),
+                      _buildActionButton("Forward", "assets/forward.png"),
+                      const SizedBox(width: 10),
                       Container(
-                        width: 64,
-                        height: 36,
+                        padding: const EdgeInsets.all(8),
+                        width: 46,
+                        height: 46,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF6d7487),
-                          borderRadius: BorderRadius.circular(50),
+                          color: const Color(0xFF3b4255),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(0xFFC4C0CC),
+                            width: 1.5,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.mail,
+                        child: Image.asset(
+                          "assets/emoji.png",
+                          height: 26,
+                          width: 26,
                           color: Colors.white,
-                          size: 26,
-                        ),
-                      ),
-                      Positioned(
-                        top: -5,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff8a030b),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Text(
-                            "99+",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Roboto',
-                            ),
-                          ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(width: 6),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Transform.scale(
-                      scale: 5,
-                      child: Image.asset(
-                        "assets/Untitled.png",
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.high,
-                        height: 15,
-                        width: 90,
+                  SizedBox(height: 30),
+                  AnimatedSlide(
+                    offset: _isFooterVisible ? Offset.zero : const Offset(0, 1),
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: AnimatedOpacity(
+                      opacity: _isFooterVisible ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: Column(
+                        children: [
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    width: 64,
+                                    height: 36,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF6d7487),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: const Icon(
+                                      Icons.mail,
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: -5,
+                                    right: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xff8a030b),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Text(
+                                        "99+",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Roboto',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 6),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Transform.scale(
+                                  scale: 5,
+                                  child: Image.asset(
+                                    "assets/Untitled.png",
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.high,
+                                    height: 15,
+                                    width: 90,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -920,20 +931,17 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     );
   }
 
-  // ── CIH Bank Email Body ──
   Widget _buildCIHBody() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        // CIH Logo text
         Image.asset(
           "assets/logo.png.webp",
           height: 34,
           width: 120,
           fit: BoxFit.fill,
         ),
-
         const Divider(color: Color(0xFFE0E0E0), thickness: 1),
         const SizedBox(height: 12),
         const Center(
@@ -951,6 +959,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         const Text(
           "Dear Customer,",
           style: TextStyle(fontSize: 14.5, fontFamily: 'Roboto'),
+          textAlign: TextAlign.justify,
         ),
         const SizedBox(height: 8),
         RichText(
@@ -964,18 +973,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             children: [
               TextSpan(
                 text:
-                    "We hereby confirm that the following transfer has been successfully processed and validated by ",
-              ),
-              TextSpan(
-                text: "CIH",
-                style: TextStyle(
-                  backgroundColor: Color(0xFFFFF176),
-                  color: Color(0xFF1C1B1F),
-                ),
+                    "We hereby confirm that the following transfer has been successfully processed and validated by CIH",
               ),
               TextSpan(text: " BANK."),
             ],
           ),
+          textAlign: TextAlign.justify,
+
         ),
         const SizedBox(height: 16),
         const Text(
@@ -986,6 +990,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             fontFamily: 'Roboto',
             color: Color(0xFF1565C0),
           ),
+          textAlign: TextAlign.justify,
+
         ),
         const SizedBox(height: 10),
         _cihDetailRow("Sender Account:", "AYA ATTAR – 6784724211021600"),
@@ -1014,28 +1020,57 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             children: [
               TextSpan(
                 text:
-                    "This email serves as an official confirmation that the payment has been executed successfully through ",
-              ),
-              TextSpan(
-                text: "CIH",
-                style: TextStyle(
-                  backgroundColor: Color(0xFFFFF176),
-                  color: Color(0xFF1C1B1F),
-                ),
+                    "This email serves as an official confirmation that the payment has been executed successfully through CIH",
               ),
               TextSpan(text: " BANK systems."),
             ],
           ),
         ),
-        const SizedBox(height: 16),
-        const Text(
-          "Security Recommendations:",
-          style: TextStyle(
-            fontSize: 14.5,
-            fontWeight: FontWeight.w700,
-            fontFamily: 'Roboto',
-            color: Color(0xFFB71C1C),
-          ),
+        const SizedBox(height: 30),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  "Security",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Roboto',
+                    color: Color(0xFFB71C1C),
+                  ),
+                ),
+                Container(
+                  width: 50,
+                  height: 1.5,
+                  color: const Color(0xFFB71C1C),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  " Recommendations:",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Roboto',
+                    color: Color(0xFFB71C1C),
+                  ),
+                ),
+                Container(
+                  width: 130,
+                  height: 1.7,
+                  color: const Color(0xFFB71C1C),
+                ),
+              ],
+            ),
+          ],
         ),
         const SizedBox(height: 8),
         const Text(
@@ -1046,6 +1081,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             color: Color(0xFF36373a),
             height: 1.5,
           ),
+          textAlign: TextAlign.justify,
+
         ),
         const SizedBox(height: 12),
         RichText(
@@ -1074,6 +1111,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               ),
             ],
           ),
+          textAlign: TextAlign.justify,
+
         ),
         const SizedBox(height: 10),
         _bulletPoint("Do not click on any links contained in such emails"),
@@ -1084,20 +1123,13 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         RichText(
           text: const TextSpan(
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 13,
               fontFamily: 'Roboto',
               color: Color(0xFF79747E),
               height: 1.5,
             ),
             children: [
-              TextSpan(text: "Copyright ©2015 "),
-              TextSpan(
-                text: "CIH",
-                style: TextStyle(
-                  backgroundColor: Color(0xFFFFF176),
-                  color: Color(0xFF79747E),
-                ),
-              ),
+              TextSpan(text: "Copyright ©2015 CIH"),
               TextSpan(text: ", All rights reserved."),
             ],
           ),
@@ -1128,11 +1160,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 13.5,
+                fontSize: 11,
                 fontFamily: 'Roboto',
                 fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
                 color: const Color(0xFF1C1B1F),
               ),
+
             ),
           ),
         ],
@@ -1146,14 +1179,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "• ",
-            style: TextStyle(
-              fontSize: 14,
-              fontFamily: 'Roboto',
-              color: Color(0xFF36373a),
-            ),
-          ),
           Expanded(
             child: Text(
               text,
@@ -1163,6 +1188,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 color: Color(0xFF36373a),
                 height: 1.4,
               ),
+              textAlign: TextAlign.justify,
             ),
           ),
         ],
@@ -1184,6 +1210,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             fontFamily: 'Roboto',
             color: Color(0xFF1C1B1F),
           ),
+          textAlign: TextAlign.justify,
+
         ),
         const SizedBox(height: 10),
         Text(
@@ -1194,6 +1222,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             fontFamily: 'Roboto',
             color: Color(0xFF36373a),
           ),
+          textAlign: TextAlign.justify,
+
         ),
       ],
     );
@@ -1208,10 +1238,12 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           child: Text(
             label,
             style: const TextStyle(
-              color: Color(0xFF56575d),
+              color: Color(0xFF45434d),
               fontSize: 14.5,
               fontFamily: 'Roboto',
             ),
+            textAlign: TextAlign.justify,
+
           ),
         ),
         Expanded(
@@ -1222,6 +1254,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
               fontFamily: 'Roboto',
               color: Color(0xFF1C1B1F),
             ),
+            textAlign: TextAlign.justify,
+
           ),
         ),
       ],
@@ -1240,7 +1274,6 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(path, height: 26, width: 26, color: Colors.white),
-
             const SizedBox(width: 8),
             Text(
               text,
@@ -1250,6 +1283,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                 fontWeight: FontWeight.w500,
                 fontFamily: 'Roboto',
               ),
+              textAlign: TextAlign.justify,
+
             ),
           ],
         ),
