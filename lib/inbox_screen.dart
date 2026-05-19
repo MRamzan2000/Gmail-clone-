@@ -10,13 +10,13 @@ final List<Map<String, dynamic>> _messages = [
     "isCIH": true,
     "from": " cihnet@cih.co.ma",
     "email": " ayamaroc025@gmail.com",
-    "date": " May 18, 2026, 16:44",
+    "date": " May 19, 2026, 16:44",
   },
   {
     "sender": "Binance",
     "title": "[Binanc...] Update on Your P2P Disput...",
     "subtitle": "[Binance] Update on Your P2P Disput...",
-    "time": "03:00",
+    "time": "May 18",
     "isRead": true, // opened
     "body":
         "[Binance] Update on Your P2P Dispute\n\nDear User,\n\nWe would like to inform you that your P2P dispute case has been updated. Please log in to your Binance account to review the latest status and take any required action.\n\nIf you have any questions, please contact our support team.\n\nThank you,\nBinance Team",
@@ -28,7 +28,7 @@ final List<Map<String, dynamic>> _messages = [
     "sender": "Binance",
     "title": "[Binanc...] Notice of P2P appeal outc...",
     "subtitle": "[Binance] Notice of P2P appeal outco...",
-    "time": "01:26",
+    "time": "May 18",
     "isRead": true, // opened
     "body":
         "[Binance] Notice of P2P Appeal Outcome\n\nDear User,\n\nYour P2P appeal has been reviewed and a decision has been reached. Please log in to your account to see the outcome.\n\nThank you,\nBinance Team",
@@ -790,7 +790,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                              padding:  EdgeInsets.fromLTRB(16, 0, 16, 20),
                               margin: const EdgeInsets.symmetric(
                                 horizontal: 12,
                               ),
@@ -816,8 +816,8 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
 
             // ── Footer with hide-on-scroll animation ──
             Padding(
-              padding: const EdgeInsets.fromLTRB(32, 10, 32, 16),
-              child: Column(
+              padding:  EdgeInsets.fromLTRB(32, 10, 32,_isFooterVisible? 16:0),
+              child: Column(mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Row(
                     children: [
@@ -846,82 +846,77 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
-                  AnimatedSlide(
+                  SizedBox(height:_isFooterVisible? 30:15),
+                  _isFooterVisible?AnimatedSlide(
                     offset: _isFooterVisible ? Offset.zero : const Offset(0, 1),
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     child: AnimatedOpacity(
                       opacity: _isFooterVisible ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 300),
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          Stack(
+                            alignment: Alignment.bottomCenter,
+                            clipBehavior: Clip.none,
                             children: [
-                              Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Container(
-                                    width: 64,
-                                    height: 36,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF6d7487),
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: const Icon(
-                                      Icons.mail,
-                                      color: Colors.white,
-                                      size: 26,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: -5,
-                                    right: 0,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 5,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff8a030b),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: const Text(
-                                        "99+",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              Container(
+                                width: 64,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF6d7487),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: const Icon(
+                                  Icons.mail,
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
                               ),
-                              const SizedBox(width: 6),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Transform.scale(
-                                  scale: 5,
-                                  child: Image.asset(
-                                    "assets/Untitled.png",
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.high,
-                                    height: 15,
-                                    width: 90,
+                              Positioned(
+                                top: -5,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff8a030b),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Text(
+                                    "99+",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Roboto',
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
+                          const SizedBox(width: 6),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Transform.scale(
+                              scale: 5,
+                              child: Image.asset(
+                                "assets/Untitled.png",
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.high,
+                                height: 15,
+                                width: 90,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
+                  ):SizedBox.shrink(),
                 ],
               ),
             ),
@@ -997,7 +992,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
         _cihDetailRow("Sender Account:", "AYA ATTAR – 6784724211021600"),
         _cihDetailRow(
           "Beneficiary Account:",
-          "YASSIR EL MOUDDEN –\n2307356062857211011150041",
+          "YASSIR EL MOUDDEN –\n230735606285721101150041",
         ),
         _cihDetailRow("Reference Number:", "VVB00001581278C"),
         _cihDetailRow("Amount:", "2,000.00 MAD", bold: true),
@@ -1026,7 +1021,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 100),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1150,8 +1145,9 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             child: Text(
               label,
               style: const TextStyle(
-                fontSize: 13.5,
+                fontSize: 11.5,
                 fontFamily: 'Roboto',
+                fontWeight :FontWeight.w400,
                 color: Color(0xFF56575d),
               ),
             ),
